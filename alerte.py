@@ -150,8 +150,8 @@ def envoyerMail(liste, login, mdp) :
 		server = smtplib.SMTP_SSL('smtp.larez.fr')
 		server.login(login, mdp)
 		msg = MIMEText(ecrireNotes(liste))
-		msg['Subject'] = "Nouvelle notes"
-		msg['From'] = 'antoine.rabany@larez.fr'
+		msg['Subject'] = "Nouvelles notes"
+		msg['From'] = login + '@larez.fr'
 		msg['To'] = login + '@supelec.fr'
 		server.send_message(msg)
 		server.quit()
