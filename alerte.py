@@ -8,19 +8,18 @@ from email.mime.text import MIMEText
 
 login ="nom_pre" #Tapez ici votre login de supelec
 mdp ="mdpsdesupelec" #Ici le mot de passe supelec
-loginMail = "prenom.nom" #Ici votre login du rezo
-mdpMail = "mdpDuRezo" #Et votre mot de passe du rezo
+adress ="prenom.nom@supelec.fr" #Tapez ici votre adresse supelec
 
 
 # Fonction finale se sers d'un json pour récuper les utilisateurs
-def alerteENT(login,mdp,loginMail,mdpMail) :
+def alerteENT(login,mdp,adress) :
 	page = connexionENT(login,mdp)
 
 	page = reduction(page)
 
 	liste = compare(page)
 
-	envoyerMail(liste,loginMail,mdpMail)
+	envoyerMail(liste,login,mdp,adress)
 
 
 #Fonction se connectant a l'ENT Supelec grace au login et au mot de passe et revoyant la page sous forme de string
@@ -145,14 +144,14 @@ def compare(page) :
 
 
 #Fonction qui envoie  un mail avec les notes
-def envoyerMail(liste, login, mdp) :
+def envoyerMail(liste, login, mdp, adress) :
 	if len(liste) != 0 :
-		server = smtplib.SMTP_SSL('smtp.larez.fr')
+		server = smtplib.SMTP_SSL('smtp.supelec.fr')
 		server.login(login, mdp)
 		msg = MIMEText(ecrireNotes(liste))
-		msg['Subject'] = "Nouvelles notes"
-		msg['From'] = login + '@larez.fr'
-		msg['To'] = login + '@supelec.fr'
+		msg['Subject'] = "Nouvelle notes"
+		msg['From'] = adress
+		msg['To'] = adress
 		server.send_message(msg)
 		server.quit()
 		print("mail envoyé")
@@ -165,4 +164,4 @@ def ecrireNotes(liste) :
 	return str
 
 
-alerteENT(login,mdp,loginMail,mdpMail)
+alerteENT(login,mdp,adress)
